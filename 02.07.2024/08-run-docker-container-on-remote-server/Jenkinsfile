@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'andriizilnyk/jenkins-nodejs-test:latest'
+        CONTAINER_NAME = 'nestjs-app'
+        SSH_CREDENTIALS_ID = '62b0fe9e-e4e2-4a57-8d18-26588929dbd1'
+        REMOTE_HOST = 'ubuntu@ec2-3-70-133-82.eu-central-1.compute.amazonaws.com'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git url: 'https://github.com/AndriiZil/jenkins-nodejs-test.git', branch: 'master'
+                echo 'Code cloned successfully'
+            }
+        }
+        stage('Create Docker Image') {
+            steps {
+                sh 'docker build -t andriizilnyk/jenkins-nodejs-test:latest .'
+            }
+        }
+        stage('Test Docker Image') {
+            steps {
+                sh 'docker inspect andriizilnyk/jenkins-nodejs-test:latest'
+            }
+        }
+        stage('Publish Docker Image') {
+            steps {
+                sh 'docker login -u andriizilnyk -p wp1jqQtCNpaf0e7fPIYg'
+                sh 'docker push andriizilnyk/jenkins-nodejs-test:latest'
+            }
+        }
+        stage('Deploy On Remote Server') {
+            steps {
+                script {
+                    // Use SSH agent for credentials
+                    sshagent(credentials: [SSH_CREDENTIALS_ID]) {
+                        // Execute SSH commands on the remote host
+                        def remoteCommands = """
+                            ssh -o StrictHostKeyChecking=no $REMOTE_HOST '
+                                # Pull Docker image
+                                sudo docker pull $DOCKER_IMAGE
+
+                                # Check if the container exists and remove if necessary
+                                if sudo docker ps -a --format '{{.Names}}' | grep -q '^$CONTAINER_NAME\$'; then
+                                    sudo docker stop $CONTAINER_NAME
+                                    sudo docker rm $CONTAINER_NAME
+                                fi
+
+                                # Run Docker container
+                                sudo docker run -d --name $CONTAINER_NAME -p 3000:3000 $DOCKER_IMAGE
+                            '
+                        """
+                        // Execute remote commands
+                        sh remoteCommands.trim()
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git url: 'https://github.com/AndriiZil/jenkins-nodejs-test.git', branch: "master"
+                echo "Code cloned successfully"
+            }
+        }
+        stage('Create Docker Image') {
+            steps {
+                sh 'docker build -t andriizilnyk/jenkins-nodejs-test:latest .'
+                echo "Build was successfull"
+            }
+        }
+    }
+}

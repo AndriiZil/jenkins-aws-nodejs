@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git url: 'https://github.com/AndriiZil/jenkins-nodejs-test.git', branch: "master"
+                echo "Code cloned successfully"
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'ls'
+            }
+        }
+        stage('Connect to Remote Server') {
+            steps {
+                script {
+                    sshagent(['7b0f14bd-0a00-43c7-9be2-d650245ecb5e']) {
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-70-133-82.eu-central-1.compute.amazonaws.com "echo Hello, World!"'
+                    }
+                }
+            }
+        }
+    }
+}

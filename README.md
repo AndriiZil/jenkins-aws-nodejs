@@ -1,9 +1,20 @@
 # Jenkins AWS
 
+- Jenkins is a Continuous Integration (CI) tool used by developers to build and test their applications.
+
 ## Links
 * https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-1-installing-jenkins-on-ec2-24675cc08998
 * https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-2-creating-a-node-js-app-3a0fb6b63bc7
 * https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-3-jenkins-node-js-app-integration-1fa9d1306d25
+
+## Licence
+
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+
+## Technologies
+
+![image](https://img.shields.io/badge/Jenkins-49728B?style=for-the-badge&logo=jenkins&logoColor=white)
+![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 
 * Installation
 ```
