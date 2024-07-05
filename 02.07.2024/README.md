@@ -27,7 +27,8 @@
 PORT on Security Group
 2. Generate `ssh keys` on the Jenkins machine and add `public key` to the `known_hosts` of NodeJS machine
 3. Install Docker on the NodeJS machine
-4. On Jenkins machine add private key to the `Manage Jenkins > Credentials`. Install `SSH Agent` plugin `Manage Jenkins > Plugins`.
+4. On Jenkins machine add private key to the `Manage Jenkins > Credentials`. Install `SSH Agent` plugin `Manage Jenkins > Plugins`
+& Docker Plugin.
 Add `private key` to the `Manage Jenkins > Credentials > System > Global Credentials`. Add id from the credentials to the `ssh agent`
 in pipeline
 5. Install Docker on Jenkins Server
